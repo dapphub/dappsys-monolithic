@@ -1,6 +1,6 @@
 {
   "name": "dappsys",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Safe Ethereum building blocks",
   "main": "index.js",
   "scripts": {
