@@ -11,8 +11,8 @@
 
 pragma solidity ^0.4.10;
 
-import "./auth.sol";
-import "./note.sol";
+import "ds-auth/auth.sol";
+import "ds-note/note.sol";
 
 contract DSStop is DSAuth, DSNote {
 

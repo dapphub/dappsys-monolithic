@@ -9,7 +9,7 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND (express or implied).
 
-pragma solidity ^0.4.10;
+pragma solidity ^0.4.8;
 
 contract DSAuthority {
     function canCall(
@@ -50,11 +50,6 @@ contract DSAuth is DSAuthEvents {
         _;
     }
 
-    modifier authorized(bytes4 sig) {
-        assert(isAuthorized(msg.sender, sig));
-        _;
-    }
-
     function isAuthorized(address src, bytes4 sig) internal returns (bool) {
         if (src == address(this)) {
             return true;
@@ -68,6 +63,6 @@ contract DSAuth is DSAuthEvents {
     }
 
     function assert(bool x) internal {
-        if (!x) throw;
+        if (!x) revert();
     }
 }
