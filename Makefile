@@ -6,7 +6,6 @@ get-latest:
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-math/master/src/math.sol'
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-stop/master/src/stop.sol'
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-token/master/src/base.sol'
-	wget -N 'https://raw.githubusercontent.com/dapphub/ds-thing/master/src/thing.sol'
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-token/master/src/token.sol'
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-vault/master/src/vault.sol'
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-vault/master/src/multivault.sol'
