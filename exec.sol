@@ -29,7 +29,7 @@ contract DSExec {
              internal
     {
         if(!tryExec(target, calldata, value)) {
-            throw;
+            revert();
         }
     }
 

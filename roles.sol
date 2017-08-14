@@ -14,7 +14,7 @@
 
 pragma solidity ^0.4.8;
 
-import 'ds-auth/auth.sol';
+import "./auth.sol";
 
 contract DSRoles is DSAuth, DSAuthority
 {
@@ -36,15 +36,38 @@ contract DSRoles is DSAuth, DSAuthority
     {
         return _capability_roles[code][sig];
     }
-    
+
+    function isUserRoot(address who) 
+        constant
+        returns (bool) 
+    {
+        return _root_users[who];
+    }
+
+    function isCapabilityPublic(address code, bytes4 sig) 
+        constant
+        returns (bool)
+    {
+        return _public_capabilities[code][sig];
+    }
+
+    function hasUserRole(address who, uint8 role) constant returns (bool) {
+        bytes32 roles = getUserRoles(who);
+        bytes32 shifted = bytes32(uint256(uint256(2) ** uint256(role)));
+        return bytes32(0) != roles & shifted;
+    }
+  
     function canCall(address caller, address code, bytes4 sig)
         constant
         returns (bool)
     {
-        if (_root_users[caller] || _public_capabilities[code][sig]) {
+        if( isUserRoot(caller) || isCapabilityPublic(code, sig) ) {
             return true;
+        } else {
+            var has_roles = getUserRoles(caller);
+            var needs_one_of = getCapabilityRoles(code, sig);
+            return bytes32(0) != has_roles & needs_one_of;
         }
-        return bytes32(0) != _user_roles[caller] & _capability_roles[code][sig];
     }
 
     function BITNOT(bytes32 input) constant returns (bytes32 output) {
@@ -88,23 +111,4 @@ contract DSRoles is DSAuth, DSAuthority
 
     }
 
-    function isUserRoot(address who) 
-        constant
-        returns (bool) 
-    {
-        return _root_users[who];
-    }
-
-    function isCapabilityPublic(address code, bytes4 sig) 
-        constant
-        returns (bool)
-    {
-        return _public_capabilities[code][sig];
-    }
-
-    function hasUserRole(address who, uint8 role) constant returns (bool) {
-        bytes32 roles = getUserRoles(who);
-        bytes32 shifted = bytes32(uint256(uint256(2) ** uint256(role)));
-        return bytes32(0) != roles & shifted;
-    }
 }

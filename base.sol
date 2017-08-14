@@ -11,8 +11,8 @@
 
 pragma solidity ^0.4.10;
 
-import "erc20/erc20.sol";
-import "ds-math/math.sol";
+import "./erc20.sol";
+import "./math.sol";
 
 contract DSTokenBase is ERC20, DSMath {
     uint256                                            _supply;

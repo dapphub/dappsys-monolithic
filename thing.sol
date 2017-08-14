@@ -1,4 +1,4 @@
-/// stop.sol -- mixin for enable/disable functionality
+// `auth` with handy mixins. your things should be DSThings
 
 // Copyright (C) 2017  DappHub, LLC
 
@@ -9,24 +9,11 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND (express or implied).
 
-pragma solidity ^0.4.10;
+pragma solidity ^0.4.8;
 
 import "./auth.sol";
 import "./note.sol";
+import "./math.sol";
 
-contract DSStop is DSAuth, DSNote {
-
-    bool public stopped;
-
-    modifier stoppable {
-        assert (!stopped);
-        _;
-    }
-    function stop() auth note {
-        stopped = true;
-    }
-    function start() auth note {
-        stopped = false;
-    }
-
+contract DSThing is DSAuth, DSNote, DSMath {
 }
