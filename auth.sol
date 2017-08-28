@@ -9,9 +9,7 @@
 // distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND (express or implied).
 
-pragma solidity ^0.4.15;
-
-import "./note.sol";
+pragma solidity ^0.4.8;
 
 contract DSAuthority {
     function canCall(
@@ -19,26 +17,32 @@ contract DSAuthority {
     ) constant returns (bool);
 }
 
-contract DSAuth is DSNote {
+contract DSAuthEvents {
+    event LogSetAuthority (address indexed authority);
+    event LogSetOwner     (address indexed owner);
+}
+
+contract DSAuth is DSAuthEvents {
     DSAuthority  public  authority;
     address      public  owner;
 
     function DSAuth() {
         owner = msg.sender;
+        LogSetOwner(msg.sender);
     }
 
     function setOwner(address owner_)
         auth
-        note
     {
         owner = owner_;
+        LogSetOwner(owner);
     }
 
     function setAuthority(DSAuthority authority_)
         auth
-        note
     {
         authority = authority_;
+        LogSetAuthority(authority);
     }
 
     modifier auth {
