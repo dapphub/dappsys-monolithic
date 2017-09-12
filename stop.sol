@@ -19,7 +19,7 @@ contract DSStop is DSNote, DSAuth {
     bool public stopped;
 
     modifier stoppable {
-        assert (!stopped);
+        require(!stopped);
         _;
     }
     function stop() auth note {
