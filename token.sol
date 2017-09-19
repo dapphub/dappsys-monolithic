@@ -30,7 +30,7 @@ contract DSToken is DSTokenBase(0), DSStop {
     event Mint(address indexed guy, uint wad);
     event Burn(address indexed guy, uint wad);
 
-    function trusted(address src, address guy) returns (bool) {
+    function trusted(address src, address guy) constant returns (bool) {
         return _trusted[src][guy];
     }
     function trust(address guy, bool wat) stoppable {
@@ -38,17 +38,14 @@ contract DSToken is DSTokenBase(0), DSStop {
         Trust(msg.sender, guy, wat);
     }
 
-    function transfer(address dst, uint wad) stoppable returns (bool) {
-        return super.transfer(dst, wad);
+    function approve(address guy, uint wad) stoppable returns (bool) {
+        return super.approve(guy, wad);
     }
     function transferFrom(address src, address dst, uint wad)
         stoppable
         returns (bool)
     {
-        require(_balances[src] >= wad);
-
-        if (!_trusted[src][msg.sender]) {
-            require(_approvals[src][msg.sender] >= wad);
+        if (src != msg.sender && !_trusted[src][msg.sender]) {
             _approvals[src][msg.sender] = sub(_approvals[src][msg.sender], wad);
         }
 
@@ -59,12 +56,9 @@ contract DSToken is DSTokenBase(0), DSStop {
 
         return true;
     }
-    function approve(address guy, uint wad) stoppable returns (bool) {
-        return super.approve(guy, wad);
-    }
 
     function push(address dst, uint wad) {
-        transfer(dst, wad);
+        transferFrom(msg.sender, dst, wad);
     }
     function pull(address src, uint wad) {
         transferFrom(src, msg.sender, wad);
@@ -72,7 +66,6 @@ contract DSToken is DSTokenBase(0), DSStop {
     function move(address src, address dst, uint wad) {
         transferFrom(src, dst, wad);
     }
-
 
     function mint(uint wad) {
         mint(msg.sender, wad);
@@ -87,7 +80,6 @@ contract DSToken is DSTokenBase(0), DSStop {
     }
     function burn(address guy, uint wad) auth stoppable {
         if (guy != msg.sender && !_trusted[guy][msg.sender]) {
-            require(_approvals[guy][msg.sender] >= wad);
             _approvals[guy][msg.sender] = sub(_approvals[guy][msg.sender], wad);
         }
 
@@ -97,11 +89,9 @@ contract DSToken is DSTokenBase(0), DSStop {
     }
 
     // Optional token name
-
     bytes32   public  name = "";
 
     function setName(bytes32 name_) auth {
         name = name_;
     }
-
 }
