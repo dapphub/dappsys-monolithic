@@ -22,10 +22,10 @@ contract DSStop is DSNote, DSAuth {
         require(!stopped);
         _;
     }
-    function stop() auth note {
+    function stop() public auth note {
         stopped = true;
     }
-    function start() auth note {
+    function start() public auth note {
         stopped = false;
     }
 
