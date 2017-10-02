@@ -24,41 +24,50 @@ contract DSRoles is DSAuth, DSAuthority
     mapping(address=>mapping(bytes4=>bool)) _public_capabilities;
 
     function getUserRoles(address who)
-        constant
+        public
+        view
         returns (bytes32)
     {
         return _user_roles[who];
     }
 
     function getCapabilityRoles(address code, bytes4 sig)
-        constant
+        public
+        view
         returns (bytes32)
     {
         return _capability_roles[code][sig];
     }
 
-    function isUserRoot(address who) 
-        constant
-        returns (bool) 
+    function isUserRoot(address who)
+        public
+        view
+        returns (bool)
     {
         return _root_users[who];
     }
 
-    function isCapabilityPublic(address code, bytes4 sig) 
-        constant
+    function isCapabilityPublic(address code, bytes4 sig)
+        public
+        view
         returns (bool)
     {
         return _public_capabilities[code][sig];
     }
 
-    function hasUserRole(address who, uint8 role) constant returns (bool) {
+    function hasUserRole(address who, uint8 role)
+        public
+        view
+        returns (bool)
+    {
         bytes32 roles = getUserRoles(who);
         bytes32 shifted = bytes32(uint256(uint256(2) ** uint256(role)));
         return bytes32(0) != roles & shifted;
     }
-  
+
     function canCall(address caller, address code, bytes4 sig)
-        constant
+        public
+        view
         returns (bool)
     {
         if( isUserRoot(caller) || isCapabilityPublic(code, sig) ) {
@@ -70,17 +79,19 @@ contract DSRoles is DSAuth, DSAuthority
         }
     }
 
-    function BITNOT(bytes32 input) constant returns (bytes32 output) {
+    function BITNOT(bytes32 input) internal pure returns (bytes32 output) {
         return (input ^ bytes32(uint(-1)));
     }
 
-    function setRootUser(address who, bool enabled) 
+    function setRootUser(address who, bool enabled)
+        public
         auth
     {
         _root_users[who] = enabled;
     }
 
     function setUserRole(address who, uint8 role, bool enabled)
+        public
         auth
     {
         var last_roles = _user_roles[who];
@@ -93,12 +104,14 @@ contract DSRoles is DSAuth, DSAuthority
     }
 
     function setPublicCapability(address code, bytes4 sig, bool enabled)
+        public
         auth
     {
         _public_capabilities[code][sig] = enabled;
     }
 
     function setRoleCapability(uint8 role, address code, bytes4 sig, bool enabled)
+        public
         auth
     {
         var last_roles = _capability_roles[code][sig];
