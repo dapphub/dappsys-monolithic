@@ -76,8 +76,8 @@ contract DSRoles is DSAuth, DSAuthority
         if( isUserRoot(caller) || isCapabilityPublic(code, sig) ) {
             return true;
         } else {
-            var has_roles = getUserRoles(caller);
-            var needs_one_of = getCapabilityRoles(code, sig);
+            bytes32 has_roles = getUserRoles(caller);
+            bytes32 needs_one_of = getCapabilityRoles(code, sig);
             return bytes32(0) != has_roles & needs_one_of;
         }
     }
@@ -97,7 +97,7 @@ contract DSRoles is DSAuth, DSAuthority
         public
         auth
     {
-        var last_roles = _user_roles[who];
+        bytes32 last_roles = _user_roles[who];
         bytes32 shifted = bytes32(uint256(uint256(2) ** uint256(role)));
         if( enabled ) {
             _user_roles[who] = last_roles | shifted;
@@ -117,7 +117,7 @@ contract DSRoles is DSAuth, DSAuthority
         public
         auth
     {
-        var last_roles = _capability_roles[code][sig];
+        bytes32 last_roles = _capability_roles[code][sig];
         bytes32 shifted = bytes32(uint256(uint256(2) ** uint256(role)));
         if( enabled ) {
             _capability_roles[code][sig] = last_roles | shifted;
