@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-pragma solidity ^0.4.13;
+pragma solidity ^0.4.23;
 
 contract DSNote {
     event LogNote(
@@ -34,7 +34,7 @@ contract DSNote {
             bar := calldataload(36)
         }
 
-        LogNote(msg.sig, msg.sender, foo, bar, msg.value, msg.data);
+        emit LogNote(msg.sig, msg.sender, foo, bar, msg.value, msg.data);
 
         _;
     }
