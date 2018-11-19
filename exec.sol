@@ -28,7 +28,7 @@ contract DSExec {
              internal
     {
         if(!tryExec(target, calldata, value)) {
-            revert();
+            revert("ds-exec-call-failed");
         }
     }
 
