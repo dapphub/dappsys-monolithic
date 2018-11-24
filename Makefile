@@ -12,6 +12,7 @@ get-latest:
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-vault/master/src/multivault.sol'
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-guard/master/src/guard.sol'
 	wget -N 'https://raw.githubusercontent.com/dapphub/ds-roles/master/src/roles.sol'
+	wget -N 'https://raw.githubusercontent.com/dapphub/ds-proxy/master/src/proxy.sol'
 	git add *.sol
 
 fix-imports:
